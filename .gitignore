@@ -2,9 +2,10 @@ venv/
 model/artifacts/
 data/raw/
 data/processed/
-__pycache__/
-.streamlit/
+data/
 mlruns/
+__pycache__/
 *.pkl
 *.pyc
 .env
+install_log.txt

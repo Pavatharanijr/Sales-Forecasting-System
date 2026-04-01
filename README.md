@@ -10,19 +10,9 @@ Ensemble ML forecasting (XGBoost + LightGBM + Ridge stacking) with SHAP explaina
 Sales Forecasting System/
 ├── app.py                    # Streamlit UI (Deep Ocean theme)
 ├── requirements.txt
-├── data/
-│   ├── prepare_data.py       # Data generation + feature engineering
-│   └── processed/            # Feature-engineered CSVs
-├── model/
-│   ├── train.py              # Ensemble training + SHAP + MLflow logging
-│   ├── artifacts/            # Saved .pkl model files
-│   └── __init__.py
-└── azure/
-    ├── deploy_azure.py       # Azure ML deployment script (infrastructure ready)
-    ├── conda_env.yml         # Azure ML environment spec
-    ├── config.json           # Azure workspace credentials
-    └── scoring/
-        └── score.py          # Azure ML scoring script
+└── model/
+    ├── train.py              # Ensemble training + SHAP + MLflow logging
+    └── __init__.py
 ```
 
 ---
