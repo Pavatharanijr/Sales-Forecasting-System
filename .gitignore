@@ -1,0 +1,10 @@
+venv/
+model/artifacts/
+data/raw/
+data/processed/
+__pycache__/
+.streamlit/
+mlruns/
+*.pkl
+*.pyc
+.env
