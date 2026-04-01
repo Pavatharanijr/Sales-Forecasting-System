@@ -3,7 +3,6 @@ Sales Forecasting System — Deep Ocean Theme
 Run: streamlit run app.py
 """
 import os
-import io
 import pickle
 import warnings
 import numpy as np
@@ -50,15 +49,13 @@ st.markdown(f"""
   .stTabs [data-baseweb="tab"] {{ color: {OCEAN['subtext']}; border-radius: 6px; flex: 1; justify-content: center; font-weight: 600; font-size: 0.95rem; padding: 10px 0; border: 1px solid {OCEAN['border']}; }}
   .stTabs [aria-selected="true"] {{ background: {OCEAN['card']}; color: {OCEAN['accent1']}; border-color: {OCEAN['accent1']}; }}
   .stTabs [data-baseweb="tab-panel"] {{ background: {OCEAN['card']}; border: 1px solid {OCEAN['border']}; border-radius: 0 0 12px 12px; padding: 24px; margin-top: -1px; }}
-  div[data-baseweb="select"] label, .stSlider label {{ color: #FFFFFF !important; font-weight: 600 !important; font-size: 0.9rem !important; }}
-  .stSelectbox label, .stSlider label {{ color: #FFFFFF !important; font-weight: 600 !important; }}
+  .stSelectbox label, .stSlider label {{ color: #FFFFFF !important; font-weight: 600 !important; font-size: 0.9rem !important; }}
+  p[data-testid="stWidgetLabel"] {{ color: #FFFFFF !important; }}
   hr {{ border-color: {OCEAN['border']}; }}
   ::-webkit-scrollbar {{ width: 6px; }}
   ::-webkit-scrollbar-track {{ background: {OCEAN['bg']}; }}
   ::-webkit-scrollbar-thumb {{ background: {OCEAN['border']}; border-radius: 3px; }}
   h1, h2, h3 {{ color: {OCEAN['accent1']}; }}
-  .stSelectbox label, .stSlider > label {{ color: #FFFFFF !important; font-weight: 600 !important; font-size: 0.9rem !important; }}
-  p[data-testid="stWidgetLabel"] {{ color: #FFFFFF !important; }}
   [data-testid="stFileUploader"] span {{ color: #000000 !important; font-weight: 600 !important; }}
   [data-testid="stFileUploader"] small {{ color: #000000 !important; }}
   [data-testid="stFileUploaderFileName"] {{ color: #000000 !important; font-weight: 600 !important; }}
