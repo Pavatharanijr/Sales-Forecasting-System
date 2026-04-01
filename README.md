@@ -1,7 +1,6 @@
-# 🌊 Sales Forecasting System
+# Sales Forecasting System
 
-Ensemble ML forecasting (XGBoost + LightGBM + Ridge stacking) with SHAP explainability,
-a Deep Ocean Streamlit UI, and Azure ML deployment.
+Ensemble ML forecasting (XGBoost + LightGBM + Ridge stacking) with SHAP explainability and a Deep Ocean Streamlit UI.
 
 ---
 
@@ -12,81 +11,44 @@ Sales Forecasting System/
 ├── app.py                    # Streamlit UI (Deep Ocean theme)
 ├── requirements.txt
 ├── data/
-│   ├── prepare_data.py       # Kaggle download + feature engineering
-│   ├── raw/                  # Raw CSV (auto-downloaded)
-│   └── processed/            # Resampled + feature-engineered CSVs
+│   ├── prepare_data.py       # Data generation + feature engineering
+│   └── processed/            # Feature-engineered CSVs
 ├── model/
 │   ├── train.py              # Ensemble training + SHAP + MLflow logging
 │   ├── artifacts/            # Saved .pkl model files
 │   └── __init__.py
 └── azure/
-    ├── deploy_azure.py       # Azure ML managed endpoint deployment
+    ├── deploy_azure.py       # Azure ML deployment script (infrastructure ready)
     ├── conda_env.yml         # Azure ML environment spec
-    ├── config.json           # Azure workspace credentials (fill in)
+    ├── config.json           # Azure workspace credentials
     └── scoring/
         └── score.py          # Azure ML scoring script
 ```
 
 ---
 
-## Setup
+## How to Run
 
 ### 1. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Kaggle API
-Place your `kaggle.json` at `~/.kaggle/kaggle.json`:
-```json
-{"username": "<kaggle-username>", "key": "<kaggle-api-key>"}
-```
-Get it from: https://www.kaggle.com/settings → API → Create New Token
-
-### 3. Download & prepare data
-```bash
-python data/prepare_data.py
-```
-This downloads the **Superstore Sales** dataset and generates:
-- `data/processed/sales_W.csv`   (Weekly)
-- `data/processed/sales_MS.csv`  (Monthly)
-- `data/processed/sales_QS.csv`  (Quarterly)
-
-### 4. Train the ensemble model
-```bash
-python model/train.py
-```
-Or click **Train / Retrain Model** in the Streamlit sidebar.
-
-### 5. Run the app
+### 2. Run the app
 ```bash
 streamlit run app.py
 ```
 
----
+### 3. Upload your dataset
+- Upload any sales CSV using the file uploader on the main page
+- The file must contain a date column and a sales/revenue column
+- Recommended: [Kaggle Superstore Dataset](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
 
-## Azure Deployment
-
-### 1. Fill in Azure config
-Edit `azure/config.json`:
-```json
-{
-  "subscription_id": "<your-azure-subscription-id>",
-  "resource_group": "<your-resource-group>",
-  "workspace_name": "<your-aml-workspace-name>"
-}
-```
-
-### 2. Login to Azure
-```bash
-az login
-```
-
-### 3. Deploy
-```bash
-# Deploy weekly model (W / MS / QS)
-python azure/deploy_azure.py W
-```
+### 4. Train and forecast
+- Select forecast frequency (Weekly / Monthly / Quarterly) from the sidebar
+- Set the number of forecast periods using the slider
+- Click **Train / Retrain Model** to train the ensemble
+- Explore results across the Forecast, Explainability, and Data Analysis tabs
 
 ---
 
@@ -94,18 +56,33 @@ python azure/deploy_azure.py W
 
 | Feature | Details |
 |---|---|
-| Dataset | Kaggle Superstore Sales |
+| Dataset | Any sales CSV (Kaggle Superstore recommended) |
 | Frequencies | Weekly / Monthly / Quarterly |
-| Models | XGBoost + LightGBM → Ridge meta-learner |
-| Explainability | SHAP feature importance + waterfall |
+| Models | XGBoost + LightGBM stacked with Ridge meta-learner |
+| Explainability | SHAP feature importance + waterfall chart |
 | Tracking | MLflow experiment logging |
 | UI Theme | Deep Ocean (Streamlit) |
-| Cloud | Azure ML Managed Online Endpoint |
 
 ---
 
 ## Metrics Tracked
-- **MAPE** — Mean Absolute Percentage Error
-- **RMSE** — Root Mean Squared Error
-- **Forecast Total** — Sum of predicted periods
-- **Avg per Period** — Mean predicted value
+
+| Metric | Description |
+|---|---|
+| MAPE | Mean Absolute Percentage Error |
+| RMSE | Root Mean Squared Error |
+| Forecast Total | Sum of all predicted periods |
+| Avg per Period | Mean predicted value per period |
+
+---
+
+## Model Architecture
+
+Raw sales data is aggregated and resampled to the chosen frequency. Time-based features (lags, rolling statistics, calendar features) are engineered and fed into two gradient boosting models — XGBoost and LightGBM. Their predictions are stacked using a Ridge meta-learner trained via TimeSeriesSplit cross-validation to prevent data leakage. SHAP values are computed on the XGBoost model to explain each prediction.
+
+---
+
+## Live Demo
+
+Deployed on Streamlit Cloud:
+[https://pavatharanijr-sales-forecasting-system.streamlit.app](https://pavatharanijr-sales-forecasting-system.streamlit.app)
